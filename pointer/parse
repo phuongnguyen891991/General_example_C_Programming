@@ -1,0 +1,6 @@
+#!/bin/sh
+
+while [ -n "$1" ]; do
+    value="`echo $1 | awk -F=": " '{print $1}' | sed 's/\,//g'`"
+    echo "value: $value"
+done
