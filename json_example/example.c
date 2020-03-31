@@ -130,6 +130,25 @@ static inline uint32_t jsonArrayGetMacStringArrayValue(json_t *root_arr, uint8_t
     return 1;
 }
 
+static inline json_t* jsonCreateNewObject()
+{
+    json_t *retJson;
+    
+    retJson = NULL;
+
+    retJson = json_object();
+    if(NULL == retJson)
+    {
+        printf("[%s-%d] Failed to alloc new object \n", __func__, __LINE__);
+        return NULL;
+    }
+    else
+    {
+        printf("Create new object successfully \n");
+        return retJson;
+    }
+}
+
 int main()
 {
     //char *js_example = "{\"hello\":\"abc\"}";
@@ -138,16 +157,24 @@ int main()
     json_t *getVal = NULL;
     char *buff;
 
-    js_example = json_object();
+    //js_example = json_object();
+    js_example = jsonCreateNewObject();
     if (!js_example)
         printf("Failed to allocated mem for js_example \n");
+
+    return;
 
     js_sub_example = json_array();
 
     if (!js_sub_example)
         printf("Failed to allocated mem for js_example \n");
 
+    json_object_set_new(js_example, "test", NULL);
+    buff = json_dumps(js_example, 0);
+    printf("%s \n", buff);
+    free(buff);
 
+    return 0;
 
     json_object_set_new(js_example, "test", json_integer(1234));
     json_array_append_new(js_sub_example, json_string("000102030405"));
