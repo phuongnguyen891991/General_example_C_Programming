@@ -1,0 +1,11 @@
+#!/bin/sh
+
+loop()
+{
+while true ; do
+ echo "."
+done
+}
+
+trap '{ echo "Hey, you pressed Ctrl-C.  Time to quit." ; exit 0; }' INT
+loop

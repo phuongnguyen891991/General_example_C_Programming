@@ -1,0 +1,13 @@
+#!/bin/sh
+
+input=1
+tic=`date +%S`
+elap_time=0
+
+while [ "$elap_time" -le "$input" ]; do
+
+toc=`date +%S`
+elap_time=`expr $toc - $tic`
+done
+
+echo "time elapsed"
