@@ -237,45 +237,5 @@ int main (int argc, char *argv[])
         }
     }
 
-//     post_obj = json_loads((const char *)input_str, 0, &json_err);
-//     if (post_obj == NULL) {
-//         PRINT_D("msg decode error %s \"%s\"\n", json_err.text, json_err.source);
-//         return -1;
-//     }
-
-//     ret = jsonGetObjVal(post_obj, DEVICE_ID_KEY, js_id);
-//     if (!ret)
-//     {
-//         PRINT_D("have no device id \n");
-//         ret = -1;
-//         goto clearn_up;
-//     }
-
-//     ret = jsonGetObjVal(post_obj, MAC_ADDR_KEY, js_mac);
-//     if (!ret)
-//     {
-//         PRINT_D("have no mac address \n");
-//         ret = -1;
-//         goto clearn_up;
-//     }
-
-//     ret = jsonGetObjVal(post_obj, SERIAL_ID_KEY, js_ser);
-//     if (!js_ser)
-//     {
-//         PRINT_D("have no serial number \n");
-//         ret = -1;
-//         goto clearn_up;
-//     }
-
-//     char *buff = NULL;
-//     buff = json_dumps(post_obj, 0);
-//     printf("input string: %s \n", buff);
-//     free(buff);
-//     ret = 0;
-
-// clearn_up:
-//     if(post_obj)
-//         json_decref(post_obj);
-
     return ret;
 }
