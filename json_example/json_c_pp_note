@@ -1,0 +1,9 @@
+
+# create json empty object
+
+json json_varaiable(json::value_t::object);
+json js;
+
+js["fcn"]=json_variable;
+
+->> output: {"fcn": {} }
