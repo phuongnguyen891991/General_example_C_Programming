@@ -60,6 +60,107 @@ bool isMAC(char *s) {
     return true;
 }
 
+// validate mac 2
+int ValidateMACAddress(unsigned char *mac)
+{
+	int i, j;
+	unsigned char str[12], value[15];
+	unsigned int mac_val = 0;
+
+	memset(str, 0x00, sizeof(str));
+	memset(value, 0x00, sizeof(value));
+
+	if (mac == NULL) {
+		printf("Null MAC Address\n");
+		mac_usage();
+		return -1;
+	}
+	/* Total MAC Address Len should be <=17 */
+	else if (strlen((const char *)mac) > 17) {
+		printf("Invalid MAC Address length\n");
+		mac_usage();
+		return -1;
+	} else {
+		/* Tokenize each field in MAC Address seperator 
+		 * Seperator ':' is only handled */
+		for (i = 2, j = 0; i <= 17; i += 3) {
+			str[j] = mac[i - 2];
+			j++;
+			str[j] = mac[i - 1];
+			j++;
+			if (mac[i] != ':' && i < 17) {
+				printf("Wrong MAC Address Format\n");
+				mac_usage();
+				return -1;
+			}
+		}
+	}
+
+	/* Validate each filed in MAC Address 
+	 * The fileds should be in the range [0-9][A-F] */
+	for (i = 0; i < 12; i++) {
+		if (isalpha(str[i]))
+			str[i] = toupper(str[i]);
+		if ((str[i] < '0') || (str[i] > '9')) {
+			if ((str[i] < 'A') || (str[i] > 'F')) {
+				printf("Wrong MAC Address Fields\n");
+				mac_usage();
+				return -1;
+			} else {
+				if ((str[i] >= 'A') && (str[i] <= 'F'))
+					str[i] -= ('A' - 10);
+			}
+		} else {
+			if ((str[i] >= '0') && (str[i] <= '9'))
+				str[i] -= '0';
+		}
+	}
+
+	/* Sum up each Byte in MAC Address */
+	for (i = 0; i < 12 / 2; i++) {
+		value[i] = (str[i << 1] << 4) + str[(i << 1) + 1];
+		mac_val += value[i];
+	}
+
+	if (mac_val) {
+		/* Check if any address is a MAC broadcast address FF:FF:FF:FF:FF:FF 
+		 * mac_val + MAX_LAN_MAC_ADDR + MAX_WAN_MAC_ADDR >= FF:FF:FF:FF:FF:FF
+		 * MAC Address is a broadcast */
+		if ((mac_val + MAX_LAN_MAC_ADDR + MAX_WAN_MAC_ADDR) >=
+		    1530) {
+			printf("MAC Address results in Broadcast Address!\n");
+			mac_usage();
+			return -1;
+		} else
+			return 0;
+	} else {
+		printf("ZERO - MAC Address Invalid!");
+		mac_usage();
+		return -1;
+	}
+}
+
+int wlan_is_valid_mac(const char* mac)
+{
+    int i = 0;
+    int s = 0;
+
+    while (*mac) {
+        if (isxdigit(*mac)) {
+            i++;
+        } else if (*mac == ':' || *mac == '-') {
+            if (i == 0 || i / 2 - 1 != s)
+                break;
+            ++s;
+        } else {
+            s = -1;
+        }
+        ++mac;
+    }
+    return (i == 12 && (s == 5 || s == 0));
+}
+
+
 int main()
 {
     char s[13] = "abcdeG012345";
